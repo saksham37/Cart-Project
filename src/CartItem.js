@@ -11,6 +11,14 @@ class CartItem extends React.Component{
         }
         // this.increaseQuantity = this.increaseQuantity.bind(this);
     }
+    decreaseQuantity = () => {
+        if(this.state.qty>0)
+          this.setState(()=>{
+            return {
+                qty: this.state.qty-1
+            }
+          })
+    }
     increaseQuantity = () => {
         // by using the arrow function it will use the binding of the parent which is the CarItem 
         // this.state.qty+=1; 
@@ -53,6 +61,7 @@ class CartItem extends React.Component{
 
                             <img alt="decrease" 
                             className="action-icons"
+                            onClick = {this.decreaseQuantity}
                              src="https://cdn-icons-png.flaticon.com/128/992/992683.png"/>
 
                             <img alt="delete" 
