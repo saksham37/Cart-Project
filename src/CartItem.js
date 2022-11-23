@@ -7,14 +7,31 @@ class CartItem extends React.Component{
         this.state = {
             title: "Mobile bas",
             price: "99",
-            qty: "2"
+            qty: 1
         }
         // this.increaseQuantity = this.increaseQuantity.bind(this);
     }
     increaseQuantity = () => {
         // by using the arrow function it will use the binding of the parent which is the CarItem 
+        // this.state.qty+=1; 
+        //above statement obviously doesn't work because react does not know that we have made changes to the state
+        // in order for react to know that we have made changes, we'll have to use setstate
         console.log("test increaseQuantity");
-        console.log("this.state ",this.state);
+        console.log("this.state.qty ",this.state.qty);
+         
+        //setState form 1
+        // this.setState({
+        //    qty: this.state.qty + 1
+        // })
+
+        //setState form 2
+        this.setState(()=>{
+            return {
+                qty: this.state.qty + 1
+            }
+        })
+
+        // Both of the above forms of setState perform shallow merging with this.state
     }
     render(){
         const {title,price,qty} = this.state;
