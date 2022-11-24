@@ -11,6 +11,28 @@ class CartItem extends React.Component{
         }
         // this.increaseQuantity = this.increaseQuantity.bind(this);
     }
+    // componentDidMount(){
+    //     this.testing();
+    // }
+    // testing(){
+    //         // Call to setState is asynchornous only when setState is calleed inside event Handlers
+    //     // In case setState is called outside of event handlers, such as in an ajax call or in a promise, it bheaves as a synchronous call
+    //     // and not batching is done then
+    //     var myPromise = new Promise((resolve,reject)=>{
+    //         setTimeout(()=>{
+    //             resolve("Ho gaya resovle");
+    //         },6000)
+    //     });
+     
+    //     myPromise.then((message)=>{
+    //         console.log("message ",message);
+    //         this.setState({qty: this.state.qty+200});
+    //         this.setState({qty: this.state.qty+200});
+    //         this.setState({qty: this.state.qty+300},()=>{
+    //         console.log("this.state ", this.state);
+    //         });
+    //     })
+    // }
     decreaseQuantity = () => {
         if(this.state.qty>0)
           this.setState(()=>{
@@ -27,17 +49,22 @@ class CartItem extends React.Component{
         console.log("test increaseQuantity");
         console.log("this.state.qty ",this.state.qty);
          
-        //setState form 1
-        // this.setState({
-        //    qty: this.state.qty + 1
-        // })
-
+        //setState form 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+        this.setState({
+           qty: this.state.qty + 2
+        },()=>{
+            console.log("qty ",this.state.qty);
+        });
+         //call to setState (in both forms) is asynchornous meaning that it runs in the background while the execution of 
+         //further code continues, if you want to perform some task only after the call to setState is finished...
+         // you 
+        // console.log(this.state.qty); 
         //setState form 2
-        this.setState(()=>{
-            return {
-                qty: this.state.qty + 1
-            }
-        })
+        // this.setState((prevState)=>{
+        //     return {
+        //         qty: prevState.qty + 1
+        //     }
+        // });
 
         // Both of the above forms of setState perform shallow merging with this.state
     }
