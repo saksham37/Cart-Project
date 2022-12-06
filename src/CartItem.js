@@ -2,15 +2,6 @@ import React from "react";
 
 class CartItem extends React.Component{
     // state of a component stores the local/temporary data for a particular component
-    constructor(){
-        super();
-        this.state = {
-            title: "Mobile bas",
-            price: "99",
-            qty: 1
-        }
-        // this.increaseQuantity = this.increaseQuantity.bind(this);
-    }
     // componentDidMount(){
     //     this.testing();
     // }
@@ -69,7 +60,8 @@ class CartItem extends React.Component{
         // Both of the above forms of setState perform shallow merging with this.state
     }
     render(){
-        const {title,price,qty} = this.state;
+        const {title,price,qty} = this.props.product;
+        console.log("this.props",this.props);
         return (
             <div className="cart-item"> 
                 <div style={styles.image} className="left-block">
