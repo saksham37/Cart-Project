@@ -46,7 +46,26 @@ class Cart extends React.Component{
            this.setState({
             products //short hand for products:products
            });
-        }
+    }
+    handleDeleteProduct = (id)=>{
+        // let {products} = this.state;
+        // const index = products.indexOf(product);
+        // console.log("product found at index ",index);
+        // console.log("DeleteCartItem called");
+        // products = products.filter((curr)=>{
+        //       return curr!==product;
+        // });
+        // this.setState({
+        //     products
+        // })
+        const {products} = this.state;
+        const items = products.filter((item)=>{
+           return item.id!==id;
+        });
+        this.setState({
+            products: items
+        })
+    }    
     render(){
         const {products} = this.state;
         return(
@@ -58,6 +77,7 @@ class Cart extends React.Component{
                 key={product.id}
                 onIncreaseQuantity = {this.increaseQuantity}
                 onDecreaseQuantity = {this.decreaseQuantity}
+                onDeleteProduct = {this.handleDeleteProduct}
                 />
              })}
             </div>
