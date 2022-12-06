@@ -24,41 +24,41 @@ class CartItem extends React.Component{
     //         });
     //     })
     // }
-    decreaseQuantity = () => {
-        if(this.state.qty>0)
-          this.setState(()=>{
-            return {
-                qty: this.state.qty-1
-            }
-          })
-    }
-    increaseQuantity = () => {
-        // by using the arrow function it will use the binding of the parent which is the CarItem 
-        // this.state.qty+=1; 
-        //above statement obviously doesn't work because react does not know that we have made changes to the state
-        // in order for react to know that we have made changes, we'll have to use setstate
-        console.log("test increaseQuantity");
-        console.log("this.state.qty ",this.state.qty);
+    // decreaseQuantity = () => {
+    //     if(this.state.qty>0)
+    //       this.setState(()=>{
+    //         return {
+    //             qty: this.state.qty-1
+    //         }
+    //       })
+    // }
+    // increaseQuantity = () => {
+    //     // by using the arrow function it will use the binding of the parent which is the CarItem 
+    //     // this.state.qty+=1; 
+    //     //above statement obviously doesn't work because react does not know that we have made changes to the state
+    //     // in order for react to know that we have made changes, we'll have to use setstate
+    //     console.log("test increaseQuantity");
+    //     console.log("this.state.qty ",this.state.qty);
          
-        //setState form 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-        this.setState({
-           qty: this.state.qty + 2
-        },()=>{
-            console.log("qty ",this.state.qty);
-        });
-         //call to setState (in both forms) is asynchornous meaning that it runs in the background while the execution of 
-         //further code continues, if you want to perform some task only after the call to setState is finished...
-         // you 
-        // console.log(this.state.qty); 
-        //setState form 2
-        // this.setState((prevState)=>{
-        //     return {
-        //         qty: prevState.qty + 1
-        //     }
-        // });
+    //     //setState form 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+    //     this.setState({
+    //        qty: this.state.qty + 2
+    //     },()=>{
+    //         console.log("qty ",this.state.qty);
+    //     });
+    //      //call to setState (in both forms) is asynchornous meaning that it runs in the background while the execution of 
+    //      //further code continues, if you want to perform some task only after the call to setState is finished...
+    //      // you 
+    //     // console.log(this.state.qty); 
+    //     //setState form 2
+    //     // this.setState((prevState)=>{
+    //     //     return {
+    //     //         qty: prevState.qty + 1
+    //     //     }
+    //     // });
 
-        // Both of the above forms of setState perform shallow merging with this.state
-    }
+    //     // Both of the above forms of setState perform shallow merging with this.state
+    // }
     render(){
         const {title,price,qty} = this.props.product;
         console.log("this.props",this.props);
@@ -75,12 +75,12 @@ class CartItem extends React.Component{
                             {/* Here we will have buttons with className = "action-icons" */}
                             <img alt="increase"
                              className="action-icons"
-                             onClick = {this.increaseQuantity}
+                            onClick = {()=>{this.props.onIncreaseQuantity(this.props.product)}}
                              src="https://cdn-icons-png.flaticon.com/128/992/992651.png"/>
 
                             <img alt="decrease" 
                             className="action-icons"
-                            onClick = {this.decreaseQuantity}
+                            onClick = {()=>{this.props.onDecreaseQuantity(this.props.product)}}
                              src="https://cdn-icons-png.flaticon.com/128/992/992683.png"/>
 
                             <img alt="delete" 
