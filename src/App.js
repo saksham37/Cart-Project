@@ -8,8 +8,9 @@ import { getFirestore, collection, getDocs, snapshotEqual } from 'firebase/fires
 // import { getDatabase, ref, onValue} from "firebase/database";
 // import { FirebaseError } from 'firebase/app';
 import * as firebase from 'firebase/firestore';
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot , addDoc, setDoc} from "firebase/firestore";
 
+const db = getFirestore(app);
 
 class App extends React.Component {
   constructor(){
@@ -150,21 +151,25 @@ increaseQuantity = (product) => {
 //    console.log("Increase the quantity of ",product);
    const {products} = this.state;
    const index = products.indexOf(product);
-   products[index].qty+=1;
-   this.setState({
-    products //short hand for products:products
-   });
+const productRef = doc(db, 'Products', products[index].id);
+setDoc(productRef, { qty: products[index].qty+1 }, { merge: true });
+  //  products[index].qty+=1;
+  //  this.setState({
+  //   products //short hand for products:products
+  //  });
 }
 decreaseQuantity = (product) => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
     //    console.log("Increase the quantity of ",product);
        const {products} = this.state;
        const index = products.indexOf(product);
-       if(products[index].qty<=0)
-       return;
-       products[index].qty-=1;
-       this.setState({
-        products //short hand for products:products
-       });
+       const productRef = doc(db, 'Products', products[index].id);
+setDoc(productRef, { qty: products[index].qty-1 }, { merge: true });
+      //  if(products[index].qty<=0)
+      //  return;
+      //  products[index].qty-=1;
+      //  this.setState({
+      //   products //short hand for products:products
+      //  });
 }
 handleDeleteProduct = (id)=>{
     // let {products} = this.state;
@@ -202,6 +207,17 @@ getCartTotal = ()=>{
   })
   return total;
 }
+ addProduct = ()=>{
+     // Add a new document with a generated id.
+     const db = getFirestore(app);
+      const docRef = addDoc(collection(db, "Products"), {
+        qty: "2",
+        title: "Razor",
+        img: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1649274115-schick-hydro-silk-1649274110.jpg",
+        price: 299
+      });
+      console.log("Document written with ID: ", docRef.id);
+ }
   render(){
     const { products,loading } = this.state;
     console.log("render called",products);
@@ -210,6 +226,9 @@ getCartTotal = ()=>{
         <Navbar
         count={this.getCartCount}
         />
+        <button
+        onClick={this.addProduct} style={{fontSize:20,marigin:5}}
+        > Add a product </button>
         <Cart
          products={products} 
          onIncreaseQuantity = {this.increaseQuantity}
