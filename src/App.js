@@ -8,10 +8,41 @@ import { getFirestore, collection, getDocs, snapshotEqual } from 'firebase/fires
 // import { getDatabase, ref, onValue} from "firebase/database";
 // import { FirebaseError } from 'firebase/app';
 import * as firebase from 'firebase/firestore';
-import { doc, onSnapshot , addDoc, setDoc} from "firebase/firestore";
+import { doc, onSnapshot , addDoc, setDoc, deleteDoc} from "firebase/firestore";
 
 const db = getFirestore(app);
-
+const myCache = [
+  {
+    title: "Mobile",
+    price: 999,
+    qty: 1,
+    img: 'https://content.jdmagicbox.com/comp/def_content/mobile_phone_dealers/default-mobile-phone-dealers-8.jpg'
+},
+{
+    title: "Watch",
+    price: 99,
+    qty: 19,
+    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTorP-lCNsfu01IlZNwqxJGyasgeTxO6BADtQ&usqp=CAU'
+},
+{
+    title: "Laptop",
+    price: 99,
+    qty: 2,
+    img: 'https://www.cnet.com/a/img/resize/33d64d1623f1dc132165ef8393fbe5e7be9b763a/hub/2021/10/28/e92175f9-bcbf-4361-9c4a-3bfaf656ac27/hp-pavilion-aero-13-09.jpg?auto=webp&fit=crop&height=528&width=940'
+},
+{
+  qty: "2",
+  title: "Razor",
+  img: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1649274115-schick-hydro-silk-1649274110.jpg",
+  price: 299
+},
+{
+  qty: "3",
+  title: "Washing Machine",
+  img : "https://www.voltasbeko.com/media/catalog/product/v/w/vwm915647-final-copy.jpg",
+  price: 2333
+}
+]
 class App extends React.Component {
   constructor(){
     super();
@@ -42,21 +73,34 @@ class App extends React.Component {
       // }
       let products = [];
         onSnapshot(collection(db,'Products'),(snapshot)=>{
-          // const products = [];
+          // let products = [];
+          console.log("onSnapshot called");
            snapshot.docChanges().forEach((change)=>{
             // console.log(change.doc.data());
             // const currdata = await change.doc.data();
-             const data = change.doc.data();
-             data['id'] = change.doc.id;
-             let found = false;
-             for(let i in products){
-               if(products[i].id==data.id){
-                 products[i] = data;
-                 found = true;
-               }
-             }
-             if(!found)
-             products.push(data);
+            console.log("inside change");
+            if(change.type==='removed'){
+              // const index = products.findIndex(change.doc.data());
+             const id = change.doc.id;
+             products = products.filter((product)=>{
+                 return product.id!=id;
+             });
+              // products.splice(index,1);
+            }
+            else{
+              const data = change.doc.data();
+              data['id'] = change.doc.id;
+              let found = false;
+              for(let i in products){
+                if(products[i].id==data.id){
+                  products[i] = data;
+                  found = true;
+                }
+              }
+              if(!found)
+              products.push(data);
+            }
+
            })
            this.setState({
             products,
@@ -182,12 +226,16 @@ handleDeleteProduct = (id)=>{
     // this.setState({
     //     products
     // })
-    const {products} = this.state;
-    const items = products.filter((item)=>{
-       return item.id!==id;
-    });
-    this.setState({
-        products: items
+    // const {products} = this.state;
+    // const items = products.filter((item)=>{
+    //    return item.id!==id;
+    // });
+    // this.setState({
+    //     products: items
+    // })
+    deleteDoc(doc(db,"Products",id))
+    .then(()=>{
+      console.log("Document deleted successfully");
     })
 } 
 getCartCount = ()=>{
@@ -209,14 +257,11 @@ getCartTotal = ()=>{
 }
  addProduct = ()=>{
      // Add a new document with a generated id.
-     const db = getFirestore(app);
-      const docRef = addDoc(collection(db, "Products"), {
-        qty: "2",
-        title: "Razor",
-        img: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1649274115-schick-hydro-silk-1649274110.jpg",
-        price: 299
-      });
-      console.log("Document written with ID: ", docRef.id);
+     myCache.map((current)=>{
+      const docRef = addDoc(collection(db, "Products"),current);
+     });
+     
+      // console.log("Document written with ID: ", docRef.id);
  }
   render(){
     const { products,loading } = this.state;
