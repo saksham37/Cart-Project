@@ -9,6 +9,7 @@ import { getFirestore, collection, getDocs, snapshotEqual } from 'firebase/fires
 // import { FirebaseError } from 'firebase/app';
 import * as firebase from 'firebase/firestore';
 import { doc, onSnapshot , addDoc, setDoc, deleteDoc} from "firebase/firestore";
+import { query, orderBy, limit } from "firebase/firestore";  
 
 const db = getFirestore(app);
 const myCache = [
@@ -71,6 +72,14 @@ class App extends React.Component {
       //   })
       //   return products;
       // }
+      // const q = query(collection(db, 'Products'), orderBy("price"));
+      // const querysnapshot = getDocs(q);
+      //    console.log("querysnapshot",querysnapshot);
+      //    querysnapshot.then((snapshot)=>{
+      //     snapshot.forEach((doc)=>{
+      //       console.log("dagaa",doc.data());
+      //     })
+      //    })
       let products = [];
         onSnapshot(collection(db,'Products'),(snapshot)=>{
           // let products = [];
@@ -102,6 +111,7 @@ class App extends React.Component {
             }
 
            })
+
            this.setState({
             products,
             loading:false
