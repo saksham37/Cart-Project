@@ -253,7 +253,7 @@ getCartCount = ()=>{
    let count = 0;
 
    products.forEach((product)=>{
-    count+=product.qty;
+    count+=parseInt(product.qty);
    })
    return count;
 }
